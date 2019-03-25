@@ -1,0 +1,6 @@
+framework module Pods_uni_fy {
+  umbrella header "Pods-uni.fy-umbrella.h"
+
+  export *
+  module * { export * }
+}
