@@ -35,7 +35,13 @@ class SignupViewController: UIViewController {
             Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!){ (user, error) in
                 if error == nil {
                     Auth.auth().currentUser?.sendEmailVerification { (error) in
-                        self.performSegue(withIdentifier: "signupToHomeSegueIdentifier", sender: self)
+                        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                        let userName = self.firstNameTextField.text! + " " + self.lastNameTextField.text!
+                        changeRequest?.displayName = userName
+                        Constants.refs.databaseUsers.child(Auth.auth().currentUser!.uid).setValue(["userName": userName])
+                        changeRequest?.commitChanges { (error) in
+                            self.performSegue(withIdentifier: "signupToHomeSegueIdentifier", sender: self)
+                        }
                     }
                 }
                 else{
